@@ -46,9 +46,9 @@ from app.api.routes import merchant_kaybic
 from app.api.admin import dashboard
 from app.api.support import ai_support
 
-app.include_router(merchant_kaybic.router, prefix="/v1")
-app.include_router(dashboard.router, prefix="/admin")
-app.include_router(ai_support.router, prefix="/support")
+app.include_router(merchant_kaybic.router)
+app.include_router(dashboard.router)
+app.include_router(ai_support.router)
 
 @app.get("/health")
 async def health():
