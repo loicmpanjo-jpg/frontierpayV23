@@ -2,7 +2,7 @@
 import uuid
 from datetime import datetime
 from sqlalchemy import Column, String, Float, Integer, Boolean, DateTime
-from sqlalchemy.dialects.postgresql import UUID, JSONB
+from sqlalchemy.dialects.postgresql import UUID, JSON
 
 from app.core.database import Base
 
@@ -31,12 +31,12 @@ class PSPProvider(Base):
     daily_limit = Column(Float, default=100_000_000.0)
 
     # Capabilities
-    supported_countries = Column(JSONB, default=list)
-    supported_currencies = Column(JSONB, default=list)
-    supported_methods = Column(JSONB, default=list)
+    supported_countries = Column(JSON, default=list)
+    supported_currencies = Column(JSON, default=list)
+    supported_methods = Column(JSON, default=list)
 
     # Config
-    config = Column(JSONB, default=dict)
+    config = Column(JSON, default=dict)
 
     # Timestamps
     created_at = Column(DateTime, default=datetime.utcnow)

@@ -2,7 +2,7 @@
 import uuid
 from datetime import datetime
 from sqlalchemy import Column, String, Float, DateTime, JSON, ForeignKey, Enum as SQLEnum, Text
-from sqlalchemy.dialects.postgresql import UUID, JSONB
+from sqlalchemy.dialects.postgresql import UUID, JSON
 from sqlalchemy.orm import relationship
 
 from app.core.database import Base
@@ -39,11 +39,11 @@ class Transaction(Base):
 
     # Status
     status = Column(String(20), default="initiated", index=True)
-    status_history = Column(JSONB, default=list)
+    status_history = Column(JSON, default=list)
 
     # Source / Destination
-    source_data = Column(JSONB)
-    destination_data = Column(JSONB)
+    source_data = Column(JSON)
+    destination_data = Column(JSON)
 
     # Merchant
     merchant_id = Column(UUID(as_uuid=True), ForeignKey("merchants.id"), nullable=True)
@@ -53,7 +53,7 @@ class Transaction(Base):
     corridor_id = Column(UUID(as_uuid=True), ForeignKey("corridors.id"), nullable=True)
 
     # Metadata
-    extra_metadata = Column(JSONB, default=dict)
+    extra_metadata = Column(JSON, default=dict)
 
     # Timestamps
     created_at = Column(DateTime, default=datetime.utcnow, index=True)

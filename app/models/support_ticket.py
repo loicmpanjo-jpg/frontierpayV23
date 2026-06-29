@@ -2,7 +2,7 @@
 import uuid
 from datetime import datetime
 from sqlalchemy import Column, String, Text, Integer, DateTime, Float
-from sqlalchemy.dialects.postgresql import UUID, JSONB, ARRAY
+from sqlalchemy.dialects.postgresql import UUID, JSON, ARRAY
 from app.core.database import Base
 
 class SupportTicket(Base):
@@ -16,7 +16,7 @@ class SupportTicket(Base):
     status = Column(String(20), default="open")
 
     # AI
-    ai_suggestions = Column(JSONB, default=list) # SQLite doesn't support ARRAY
+    ai_suggestions = Column(JSON, default=list) # SQLite doesn't support ARRAY
     ai_confidence = Column(Float, default=0.0)
 
     # Resolution
