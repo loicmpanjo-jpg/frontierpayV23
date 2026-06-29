@@ -4,8 +4,9 @@ from .merchant import Merchant
 from .psp_provider import PSPProvider
 from .settlement import SettlementPosition
 from .support_ticket import SupportTicket
+from .corridor import Corridor
 
 __all__ = [
     "Transaction", "Merchant", "PSPProvider",
-    "SettlementPosition", "SupportTicket",
+    "SettlementPosition", "SupportTicket", "Corridor",
 ]
