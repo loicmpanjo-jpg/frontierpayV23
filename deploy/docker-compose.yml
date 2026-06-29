@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: cosy-postgres
+    environment:
+      POSTGRES_USER: cosy_admin
+      POSTGRES_PASSWORD: cosy_secret_2026
+      POSTGRES_DB: cosy_v0
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ../backend/migrations:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cosy_admin -d cosy_v0"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - cosy-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: cosy-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - cosy-network
+
+  api:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    container_name: cosy-api
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_URL: postgres://cosy_admin:cosy_secret_2026@postgres:5432/cosy_v0
+      REDIS_URL: redis://redis:6379
+      JWT_PRIVATE_KEY_PATH: /app/keys/jwt-private.pem
+      JWT_PUBLIC_KEY_PATH: /app/keys/jwt-public.pem
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../backend/keys:/app/keys:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - cosy-network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  cosy-network:
+    driver: bridge
