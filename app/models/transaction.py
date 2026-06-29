@@ -53,7 +53,7 @@ class Transaction(Base):
     corridor_id = Column(UUID(as_uuid=True), ForeignKey("corridors.id"), nullable=True)
 
     # Metadata
-    metadata = Column(JSONB, default=dict)
+    extra_metadata = Column(JSONB, default=dict)
 
     # Timestamps
     created_at = Column(DateTime, default=datetime.utcnow, index=True)
