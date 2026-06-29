@@ -2,9 +2,7 @@
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 from sqlalchemy.orm import declarative_base
 from sqlalchemy import MetaData
-
 from app.core.config import settings
-
 # Naming convention for constraints
 convention = {
     "ix": "ix_%(column_0_label)s",
@@ -13,22 +11,29 @@ convention = {
     "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
     "pk": "pk_%(table_name)s",
 }
-
 metadata = MetaData(naming_convention=convention)
 Base = declarative_base(metadata=metadata)
 
+# SQLite does not support pool_size and max_overflow
+engine_args = {
+    "echo": settings.DEBUG,
+}
+
+if not settings.DATABASE_URL.startswith("sqlite"):
+    engine_args.update({
+        "pool_size": 20,
+        "max_overflow": 10,
+        "pool_pre_ping": True,
+    })
+
 engine = create_async_engine(
     settings.DATABASE_URL,
-    echo=settings.DEBUG,
-    pool_size=20,
-    max_overflow=10,
-    pool_pre_ping=True,
+    **engine_args
 )
 
 async_session = async_sessionmaker(
     engine, class_=AsyncSession, expire_on_commit=False
 )
-
 
 async def get_db() -> AsyncSession:
     async with async_session() as session:
@@ -40,7 +45,6 @@ async def get_db() -> AsyncSession:
             raise
         finally:
             await session.close()
-
 
 async def init_db():
     async with engine.begin() as conn:
