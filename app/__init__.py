@@ -1,0 +1,1 @@
+"""FrontierPay Application"""
