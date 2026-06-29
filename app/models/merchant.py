@@ -1,12 +1,10 @@
 """Merchant Model"""
 import uuid
 from datetime import datetime
-from sqlalchemy import Column, String, Float, Boolean, DateTime, Integer, Text
+from sqlalchemy import Column, String, Float, Boolean, DateTime, Integer, Text, JSON
 from sqlalchemy.dialects.postgresql import UUID, JSONB
 from sqlalchemy.orm import relationship
-
 from app.core.database import Base
-
 
 class Merchant(Base):
     __tablename__ = "merchants"
@@ -37,7 +35,7 @@ class Merchant(Base):
     webhook_secret = Column(String(255))
 
     # Settings
-    settings = Column(JSONB, default=dict)
+    settings = Column(JSON, default=dict)
 
     # Relations
     transactions = relationship("Transaction", back_populates="merchant")
