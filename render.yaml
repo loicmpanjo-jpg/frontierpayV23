@@ -103,7 +103,6 @@ services:
   # Static Site — Frontend vitrine
   - type: static_site
     name: afm-frontend
-    runtime: static
     buildCommand: echo "Frontend statique"
     staticPublishPath: ./frontend
     routes:
