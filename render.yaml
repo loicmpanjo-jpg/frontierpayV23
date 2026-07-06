@@ -101,7 +101,7 @@ services:
         value: "true"
 
   # Static Site — Frontend vitrine
-  - type: static
+  - type: static_site
     name: afm-frontend
     runtime: static
     buildCommand: echo "Frontend statique"
