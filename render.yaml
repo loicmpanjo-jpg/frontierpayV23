@@ -1,5 +1,5 @@
 services:
-  # Service unique combinant API + Worker (Plan Gratuit)
+  # 1. Service unique combinant API + Worker (Plan Gratuit)
   - type: web
     name: afm-all-in-one
     runtime: python
@@ -8,13 +8,30 @@ services:
     buildCommand: pip install -r requirements.txt
     startCommand: ./start_all.sh
     envVars:
-      # On demande l'URL de la base de données existante pour éviter le conflit de quota
       - key: DATABASE_URL
-        sync: true
-      # On demande l'URL Redis existante ou on utilise le Key-Value si disponible
+        fromDatabase:
+          name: afm-db-free
+          property: connectionString
       - key: REDIS_URL
-        sync: true
+        fromService:
+          type: keyvalue
+          name: afm-redis-free
+          property: connectionString
       - key: ENVIRONMENT
         value: production
       - key: LOG_LEVEL
         value: INFO
+
+  # 2. Render Key-Value (Redis compatible) - Offre gratuite
+  - type: keyvalue
+    name: afm-redis-free
+    plan: free
+    region: frankfurt
+    ipAllowList:
+      - source: 0.0.0.0/0
+        description: everywhere
+
+databases:
+  - name: afm-db-free
+    plan: free
+    region: frankfurt
