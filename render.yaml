@@ -72,7 +72,7 @@ services:
         value: "https://afm-api-gateway.onrender.com/metrics"
 
   # 4. Frontend — Site Vitrine & App
-  - type: static_site
+  - type: static
     name: afm-frontend
     buildCommand: echo "no build needed"
     staticPublishPath: ./frontend
