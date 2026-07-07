@@ -71,9 +71,10 @@ services:
       - key: API_TARGET
         value: "https://afm-api-gateway.onrender.com/metrics"
 
-  # 4. Frontend — Site Vitrine & App
-  - type: static
+  # 4. Frontend — Site Vitrine & App (Type: web, Runtime: static)
+  - type: web
     name: afm-frontend
+    runtime: static
     buildCommand: echo "no build needed"
     staticPublishPath: ./frontend
     routes:
