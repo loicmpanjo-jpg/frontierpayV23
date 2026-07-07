@@ -1,12 +1,11 @@
 services:
-  # Service unique combinant API + Worker (Plan Gratuit)
   - type: web
     name: afm-prod-gateway-v23
     runtime: python
     plan: free
     region: frankfurt
-    buildCommand: pip install -r requirements.txt
-    startCommand: ./start_all.sh
+    buildCommand: "pip install --upgrade pip && pip install -r requirements.txt"
+    startCommand: "chmod +x ./start_all.sh && ./start_all.sh"
     envVars:
       - key: DATABASE_URL
         fromDatabase:
