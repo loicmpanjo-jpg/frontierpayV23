@@ -1,5 +1,5 @@
 services:
-  # Service unique combinant API + Worker (Plan Gratuit)
+  # 1. Service unique combinant API + Worker (Plan Gratuit)
   - type: web
     name: afm-all-in-one
     runtime: python
@@ -22,16 +22,16 @@ services:
       - key: LOG_LEVEL
         value: INFO
 
-databases:
-  - name: afm-db-free
-    plan: free
-    region: frankfurt
-
-# Render Key-Value (Redis compatible) avec offre gratuite
-keyvalues:
-  - name: afm-redis-free
+  # 2. Render Key-Value (Redis compatible) - Doit être dans 'services'
+  - type: keyvalue
+    name: afm-redis-free
     plan: free
     region: frankfurt
     ipAllowList:
       - source: 0.0.0.0/0
         description: everywhere
+
+databases:
+  - name: afm-db-free
+    plan: free
+    region: frankfurt
