@@ -9,8 +9,8 @@ asyncpg
 alembic==1.13.2
 
 # Validation & Serialization
-pydantic==2.8.2
-pydantic-settings==2.3.4
+pydantic
+pydantic-settings
 email-validator==2.2.0
 
 # Security
